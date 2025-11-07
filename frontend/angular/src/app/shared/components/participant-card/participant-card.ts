@@ -58,6 +58,8 @@ export class ParticipantCard {
   public readonly ariaLabelCopy = AriaLabel.ParticipantLink;
   public readonly iconInfo = IconName.Info;
   public readonly ariaLabelInfo = AriaLabel.Info;
+  public readonly iconDelete = IconName.Delete;
+  public readonly ariaLabelDelete = AriaLabel.Delete;
 
   @HostBinding('tabindex') tab = 0;
   @HostBinding('class.list-row') rowClass = true;
@@ -102,6 +104,10 @@ export class ParticipantCard {
     }
 
     this.#showPopup();
+  }
+
+  public onDeleteClick(): void {
+    this.#userService.deleteUser(this.participant().id).subscribe();
   }
 
   public onCopyHover(target: EventTarget | null): void {
