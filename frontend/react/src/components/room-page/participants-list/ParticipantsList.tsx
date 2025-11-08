@@ -10,7 +10,10 @@ import {
 import { type ParticipantsListProps, type PersonalInformation } from "./types";
 import "./ParticipantsList.scss";
 
-const ParticipantsList = ({ participants }: ParticipantsListProps) => {
+const ParticipantsList = ({
+  participants,
+  onDeleteParticipant,
+}: ParticipantsListProps) => {
   const { userCode } = useParams();
   const [selectedParticipant, setSelectedParticipant] =
     useState<PersonalInformation | null>(null);
@@ -32,6 +35,10 @@ const ParticipantsList = ({ participants }: ParticipantsListProps) => {
       link: generateParticipantLink(participant.userCode),
     };
     setSelectedParticipant(personalInfoData);
+  };
+
+  const handleDeleteButtonClick = (participant: Participant) => {
+    onDeleteParticipant?.(participant);
   };
 
   const handleModalClose = () => setSelectedParticipant(null);
@@ -82,6 +89,7 @@ const ParticipantsList = ({ participants }: ParticipantsListProps) => {
                   ? () => handleInfoButtonClick(user)
                   : undefined
               }
+              onDeleteButtonClick={() => handleDeleteButtonClick(user)}
             />
           ))}
         </div>
