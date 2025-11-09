@@ -72,6 +72,24 @@ const RoomPage = () => {
       false,
     );
 
+  const handleDeleteParticipant = async (userId: number) => {
+    const response = await fetch(
+      `${BASE_API_URL}/api/users/${userId}?userCode=${userCode}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+
+    if (!response.ok) {
+      showToast("Failed to remove participant. Try again.", "error", "large");
+      return;
+    }
+
+    showToast("Participant successfully removed.", "success", "large");
+    fetchParticipants();
+  };
+
   const isLoading =
     isLoadingRoomDetails || isLoadingParticipants || isRandomizing;
 
@@ -87,6 +105,9 @@ const RoomPage = () => {
         participants={participants ?? []}
         roomDetails={roomDetails ?? ({} as GetRoomResponse)}
         onDrawNames={() => fetchRandomize()}
+        onDeleteParticipant={(participant) =>
+          handleDeleteParticipant(participant.id)
+        }
       />
     </main>
   );
